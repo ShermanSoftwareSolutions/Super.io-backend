@@ -35,6 +35,11 @@ module.exports.routes = {
   'POST /user/login': 'UserController.login',
   'POST /user/signup': 'UserController.signup',
 
+  'GET /product': 'ProductController.all',
+  'GET /product/detail/:id': 'ProductController.find',
+  'GET /product/:query': 'ProductController.findQuery',
+  'POST /product': 'ProductController.create'
+
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *
