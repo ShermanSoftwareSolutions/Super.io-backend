@@ -39,7 +39,7 @@ module.exports = {
 
   createToken: function (user) {
     var payload = {
-      sub: user.id,
+      sub: user,
       iat: moment().unix(),
       exp: moment().add(config.TOKEN_TTL, 'days').unix()
     };
