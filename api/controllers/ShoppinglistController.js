@@ -11,9 +11,12 @@ module.exports = {
       .find({userId: 1}) // TODO: set to req.userId
       .populate('lines')
       .then(function (shoppinglists) {
-        shoppinglists.map(function (item) {
-          console.log(item.lines.length);
+        shoppinglists.map(function (item, id) {
+          var listLength = item.lines.length;
+          shoppinglists[id].lines = undefined;
+          shoppinglists[id].count = listLength;
         });
+
         return res.json(shoppinglists);
       })
   },
