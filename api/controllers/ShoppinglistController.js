@@ -52,6 +52,22 @@ module.exports = {
             return res.json(shoppinglist)
           });
       })
+  },
+
+  create: function (req, res) {
+    var list = {
+      title: req.body.title,
+      userId: 1 // TODO: set to req.userId
+    };
+
+    if (list.title == '')
+      return res.status(422).json('Invalid input');
+
+    Shoppinglist
+      .create(list)
+      .then(function (newList) {
+        return res.json(newList);
+      });
   }
 };
 
