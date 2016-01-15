@@ -68,6 +68,33 @@ module.exports = {
       .then(function (newList) {
         return res.json(newList);
       });
+  },
+
+  addProduct: function (req, res) {
+    var line = {
+      shoppinglistId: req.params.listId,
+      productId: req.params.productId,
+      amount: req.body.amount
+    };
+
+    if (line.amount == '')
+      return res.status(422).json('Invalid input');
+
+    Shoppinglist.findOne({id: line.shoppinglistId}).then(function (list) {
+      if (!list)
+        return res.status(422).json('Invalid input');
+
+      Product.findOne({id: line.productId}).then(function (product) {
+        if (!product)
+          return res.status(422).json('Invalid input');
+
+        ShoppinglistLine
+          .create(line)
+          .then(function (newLine) {
+            return res.json(newLine);
+          })
+      })
+    });
   }
 };
 
