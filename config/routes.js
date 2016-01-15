@@ -38,7 +38,10 @@ module.exports.routes = {
   'GET /product': 'ProductController.all',
   'GET /product/detail/:id': 'ProductController.find',
   'GET /product/:query': 'ProductController.findQuery',
-  'POST /product': 'ProductController.create'
+  'POST /product': 'ProductController.create',
+
+  'GET /shoppinglist': 'ShoppinglistController.find',
+  'GET /shoppinglist/:id': 'ShoppinglistController.findOne',
 
   /***************************************************************************
   *                                                                          *

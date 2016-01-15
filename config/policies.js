@@ -26,7 +26,20 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-  // '*': true,
+  '*': false,
+
+  UserController: {
+    '*': true
+  },
+
+  ProductController: {
+    '*': true,
+    all: ['jwtAuth']
+  },
+
+  ShoppinglistController: {
+    '*': true
+  }
 
   /***************************************************************************
   *                                                                          *
