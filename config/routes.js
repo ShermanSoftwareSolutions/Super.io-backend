@@ -44,6 +44,7 @@ module.exports.routes = {
   'GET /shoppinglist/:id': 'ShoppinglistController.findOne',
   'POST /shoppinglist': 'ShoppinglistController.create',
   'PUT /shoppinglist/:listId/:productId': 'ShoppinglistController.addProduct',
+  'DELETE /shoppinglist/:listId/:productId': 'ShoppinglistController.removeProduct',
 
   /***************************************************************************
   *                                                                          *

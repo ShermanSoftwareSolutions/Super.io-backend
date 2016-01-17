@@ -77,7 +77,7 @@ module.exports = {
       amount: req.body.amount
     };
 
-    if (line.amount == '')
+    if (line.shoppinglistId == '' || line.productId == '' || line.amount == '')
       return res.status(422).json('Invalid input');
 
     Shoppinglist.findOne({id: line.shoppinglistId}).then(function (list) {
@@ -95,6 +95,25 @@ module.exports = {
           })
       })
     });
+  },
+
+  removeProduct: function (req, res) {
+    var line = {
+      shoppinglistId: req.params.listId,
+      productId: req.params.productId
+    };
+
+    if (line.shoppinglistId == '' || line.productId == '')
+      return res.status(422).json('Invalid input');
+
+    ShoppinglistLine
+      .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId}) // Change to delete or something?
+      .then(function (line) {
+        if (!line)
+          return res.status(422).json('Invalid input');
+
+        res.json(line);
+      });
   }
 };
 
