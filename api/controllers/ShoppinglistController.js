@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-	find: function (req, res) {
+  find: function (req, res) {
     Shoppinglist
       .find({userId: req.userId})
       .populate('lines')
@@ -115,23 +115,36 @@ module.exports = {
     });
   },
 
-  removeProduct: function (req, res) {
+  changeAmount: function (req, res) {
     var line = {
       shoppinglistId: req.params.listId,
-      productId: req.params.productId
+      productId: req.params.productId,
+      amount: req.body.amount
     };
 
-    if (line.shoppinglistId == '' || line.productId == '')
+    if (line.shoppinglistId == '' || line.productId == '' || !(line.amount >= 0))
       return res.status(422).json('Invalid input');
 
-    ShoppinglistLine
-      .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId}) // Change to delete or something?
-      .then(function (line) {
-        if (!line)
-          return res.status(422).json('Invalid input');
+    if (line.amount == 0) {
+      ShoppinglistLine
+        .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId})
+        .then(function (line) {
+          if (!line)
+            return res.status(422).json('Invalid input');
 
-        return res.json(line);
-      });
+          return res.json(line);
+        });
+    } else {
+      ShoppinglistLine
+        .update({shoppinglistId: line.shoppinglistId, productId: line.productId},
+        {amount: line.amount})
+        .then(function (line) {
+          if (!line)
+            return res.status(422).json('Invalid input');
+
+          return res.json(line);
+        });
+    }
   }
 };
 
