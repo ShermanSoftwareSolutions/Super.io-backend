@@ -40,7 +40,6 @@ module.exports = {
           .find({id: productIds})
           .then(function (products) {
             var shoppinglist = list.toObject();
-            console.log(list);
 
             products.map(function (productItem) {
               shoppinglist.lines.map(function (listItem, id) {
