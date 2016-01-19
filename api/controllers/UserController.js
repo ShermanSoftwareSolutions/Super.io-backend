@@ -7,6 +7,13 @@
 var bcrypt = require('bcryptjs');
 
 module.exports = {
+  /**
+   * Logs a user in and returns a JWT
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   login: function (req, res) {
     var newUser = {
       email: req.body.email,
@@ -17,6 +24,7 @@ module.exports = {
     if (newUser.email == '' || newUser.password == '')
       return res.status(422).json('Incorrect email or password');
 
+    // Check if the user exists
     User
       .findOne({email: newUser.email})
       .then(function (user) {
@@ -45,6 +53,13 @@ module.exports = {
       });
   },
 
+  /**
+   * Signs up the user and returns a JWT
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   signup: function (req, res) {
     var newUser = {
       email: req.body.email,
@@ -54,23 +69,28 @@ module.exports = {
       lastName: req.body.lastName
     };
 
+    // Check if the input is null
     if (newUser.email == '' || newUser.password == '' || newUser.confirmPassword == '')
       return res.status(422).json('Invalid credentials');
 
+    // Compares the password and confirm password
     if (newUser.password != newUser.confirmPassword)
       return res.status(422).json('Password do not match');
 
+    // Check if the email already exists
     User
       .findOne({email: newUser.email})
       .then(function (user) {
         if (user)
           return res.status(422).json('Email is already taken');
 
+        // Generate a salt and create a hash
         bcrypt.genSalt(10, function (err, salt) {
           bcrypt.hash(newUser.password, salt, function (err, hash) {
             newUser.password = hash;
             newUser.confirmPassword = undefined;
 
+            // Creates the user in the DB
             User
               .create(newUser)
               .then(function (user) {

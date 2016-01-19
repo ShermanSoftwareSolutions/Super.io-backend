@@ -44,6 +44,7 @@ module.exports = {
    */
   find: function (req, res) {
     var id = req.params.id;
+
     Product
       .findOne(id)
       .then(function (product) {
@@ -69,6 +70,7 @@ module.exports = {
       salesTax: req.body.salesTax
     };
 
+    // Check if the input is not null
     if (newProduct.title == '' || newProduct.price == '' || (newProduct.salesTax != '6' && newProduct.salesTax != '21'))
       return res.status(422).json('Invalid input');
 
