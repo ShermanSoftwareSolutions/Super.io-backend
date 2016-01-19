@@ -33,12 +33,11 @@ module.exports.policies = {
   },
 
   ProductController: {
-    '*': true,
-    all: ['jwtAuth']
+    '*': true
   },
 
   ShoppinglistController: {
-    '*': true
+    '*': ['jwtAuth']
   }
 
   /***************************************************************************
