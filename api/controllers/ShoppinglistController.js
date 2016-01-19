@@ -6,21 +6,27 @@
  */
 
 module.exports = {
+  /**
+   * Finds all the shoppinglists for the user
+   *
+   * @param req
+   * @param res
+   */
   find: function (req, res) {
     Shoppinglist
       .find({userId: req.userId})
       .populate('lines')
       .then(function (shoppinglists) {
-        shoppinglists.map(function (item, id) {
-          var listLength = item.lines.length;
-          shoppinglists[id].lines = undefined;
-          shoppinglists[id].count = listLength;
-        });
-
         return res.json(shoppinglists);
       })
   },
 
+  /**
+   * Find a shoppinglist with all it's products
+   *
+   * @param req
+   * @param res
+   */
   findOne: function (req, res) {
     Shoppinglist
       .findOne({id: req.params.id, userId: req.userId})
@@ -29,6 +35,7 @@ module.exports = {
         if (!list)
           return res.notFound();
 
+        // Get all the product id's that are in this shoppinglist
         var productIds = [];
         list.lines.map(function (item, id) {
           item.product = undefined;
@@ -36,6 +43,7 @@ module.exports = {
           list.lines[id].product = [];
         });
 
+        // Fetch all the products and append it to the list
         Product
           .find({id: productIds})
           .then(function (products) {
@@ -53,12 +61,20 @@ module.exports = {
       })
   },
 
+  /**
+   * Creates a new shoppinglist
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   create: function (req, res) {
     var list = {
       title: req.body.title,
       userId: req.userId
     };
 
+    // Check if the input is not null
     if (list.title == '')
       return res.status(422).json('Invalid input');
 
@@ -69,11 +85,19 @@ module.exports = {
       });
   },
 
+  /**
+   * Deletes an shoppinglist with it's id
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   delete: function (req, res) {
     var list = {
       id: req.params.id
     };
 
+    // Check if the input is not null
     if (list.id == '')
       return res.status(422).json('Invalid input');
 
@@ -87,6 +111,13 @@ module.exports = {
       });
   },
 
+  /**
+   * Fetches a shoppinglist and all it's products
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   addProduct: function (req, res) {
     var line = {
       shoppinglistId: req.params.listId,
@@ -94,17 +125,21 @@ module.exports = {
       amount: req.body.amount
     };
 
+    // Check if the input is not null
     if (line.shoppinglistId == '' || line.productId == '' || line.amount == '')
       return res.status(422).json('Invalid input');
 
+    // Check if the shoppinglist exists
     Shoppinglist.findOne({id: line.shoppinglistId}).then(function (list) {
       if (!list)
         return res.status(422).json('Invalid input');
 
+      // Check if the products exist
       Product.findOne({id: line.productId}).then(function (product) {
         if (!product)
           return res.status(422).json('Invalid input');
 
+        // Create a new shoppinglist line for the added product
         ShoppinglistLine
           .create(line)
           .then(function (newLine) {
@@ -114,6 +149,13 @@ module.exports = {
     });
   },
 
+  /**
+   * Changes the amount of a product in a shoppinglist
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
   changeAmount: function (req, res) {
     var line = {
       shoppinglistId: req.params.listId,
@@ -121,9 +163,11 @@ module.exports = {
       amount: req.body.amount
     };
 
+    // Check if the products exist
     if (line.shoppinglistId == '' || line.productId == '' || !(line.amount >= 0))
       return res.status(422).json('Invalid input');
 
+    // If the amount is 0, delete the shoppinglist line
     if (line.amount == 0) {
       ShoppinglistLine
         .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId})
@@ -134,6 +178,7 @@ module.exports = {
           return res.json(line);
         });
     } else {
+      // Otherwise update the amount of shoppinglist line
       ShoppinglistLine
         .update({shoppinglistId: line.shoppinglistId, productId: line.productId},
         {amount: line.amount})
