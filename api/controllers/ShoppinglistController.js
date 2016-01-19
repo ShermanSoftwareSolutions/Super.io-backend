@@ -8,7 +8,7 @@
 module.exports = {
 	find: function (req, res) {
     Shoppinglist
-      .find({userId: 1}) // TODO: set to req.userId
+      .find({userId: req.userId})
       .populate('lines')
       .then(function (shoppinglists) {
         shoppinglists.map(function (item, id) {
@@ -23,7 +23,7 @@ module.exports = {
 
   findOne: function (req, res) {
     Shoppinglist
-      .findOne({id: req.params.id, userId: 1}) // TODO: set to req.userId
+      .findOne({id: req.params.id, userId: req.userId})
       .populate('lines')
       .then(function (list) {
         if (!list)
@@ -57,7 +57,7 @@ module.exports = {
   create: function (req, res) {
     var list = {
       title: req.body.title,
-      userId: 1 // TODO: set to req.userId
+      userId: req.userId
     };
 
     if (list.title == '')
@@ -67,6 +67,24 @@ module.exports = {
       .create(list)
       .then(function (newList) {
         return res.json(newList);
+      });
+  },
+
+  delete: function (req, res) {
+    var list = {
+      id: req.params.id
+    };
+
+    if (list.id == '')
+      return res.status(422).json('Invalid input');
+
+    Shoppinglist
+      .destroy({id: list.id, userId: req.userId})
+      .then(function (list) {
+        if (!list)
+          return res.status(422).json('Invalid input');
+
+        return res.json(list);
       });
   },
 
@@ -112,7 +130,7 @@ module.exports = {
         if (!line)
           return res.status(422).json('Invalid input');
 
-        res.json(line);
+        return res.json(line);
       });
   }
 };

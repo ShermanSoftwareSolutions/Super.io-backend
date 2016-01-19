@@ -1,11 +1,11 @@
 var jwt = require('jwt-simple');
 
 module.exports = function (req, res, next) {
-  if (!req.headers.authentication) {
+  if (!req.headers.authorization) {
     return handleError(res);
   }
 
-  var token = req.headers.authentication.split(' ')[1];
+  var token = req.headers.authorization.split(' ')[1];
 
   var payload = jwt.decode(token, config.TOKEN_SECRET);
 
