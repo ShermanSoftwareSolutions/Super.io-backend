@@ -148,6 +148,56 @@ module.exports = {
             }
           })
       })
+  },
+
+  /**
+   * Changes the amount of a product in a shoppingcart
+   *
+   * @param req
+   * @param res
+   * @returns {*}
+   */
+  changeAmount: function (req, res) {
+    var line = {
+      shoppingcartId: req.params.shoppingcartId,
+      productId: req.params.productId,
+      amount: req.body.amount
+    };
+
+    // Check if the input is valid
+    if (line.shoppingcartId == '' || line.productId == '' || !(line.amount >= 0))
+      return res.status(422).json('Invalid  input');
+
+    // Check if product exists
+    Product
+      .findOne({id: line.productId})
+      .then(function (product) {
+        if (!product)
+          return res.status(422).json('Invalid input');
+
+        // If the amount is 0, delete the shoppingcart line
+        if (line.amount == 0) {
+          ShoppingcartLine
+            .destroy({shoppingcartId: line.shoppingcartId, productId: line.productId})
+            .then(function (cart) {
+              if (!cart)
+                return res.status(422).json('Invalid input');
+
+              return res.json(cart);
+            });
+        } else {
+          // Otherwise update the amount of shoppingcart line
+          ShoppingcartLine
+            .update({shoppingcartId: line.shoppingcartId, productId: line.productId},
+              {amount: line.amount})
+            .then(function (cart) {
+              if (!cart)
+                return res.status(422).json('Invalid input');
+
+              return res.json(cart);
+            });
+        }
+      });
   }
 };
 
