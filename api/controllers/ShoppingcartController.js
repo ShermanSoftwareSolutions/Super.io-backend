@@ -170,7 +170,7 @@ module.exports = {
     };
 
     // Check if the input is valid
-    if (line.shoppingcartId == '' || line.productId == '' || !(line.amount >= 0))
+    if (line.shoppingcartId == '' || line.shoppingcartId == undefined || line.productId == '' || line.productId == undefined || !(line.amount >= 0) || line.amount == '' || line.amount == undefined)
       return res.status(422).json('Invalid  input');
 
     // Check if product exists

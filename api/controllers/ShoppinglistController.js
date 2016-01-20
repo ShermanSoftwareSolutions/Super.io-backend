@@ -75,7 +75,7 @@ module.exports = {
     };
 
     // Check if the input is not null
-    if (list.title == '')
+    if (list.title == '' || list.title == undefined)
       return res.status(422).json('Invalid input');
 
     Shoppinglist
@@ -98,7 +98,7 @@ module.exports = {
     };
 
     // Check if the input is not null
-    if (list.id == '')
+    if (list.id == '' || list.id == undefined)
       return res.status(422).json('Invalid input');
 
     Shoppinglist
@@ -126,7 +126,7 @@ module.exports = {
     };
 
     // Check if the input is not null
-    if (line.shoppinglistId == '' || line.productId == '' || line.amount == '')
+    if (line.shoppinglistId == '' || line.shoppinglistId == undefined || line.productId == '' || line.productId == undefined || line.amount == '' || line.amount == undefined)
       return res.status(422).json('Invalid input');
 
     // Check if the shoppinglist exists
@@ -164,7 +164,7 @@ module.exports = {
     };
 
     // Check if the input is valid
-    if (line.shoppinglistId == '' || line.productId == '' || !(line.amount >= 0))
+    if (line.shoppinglistId == '' || line.shoppinglistId == undefined || line.productId == '' || line.productId == undefined || !(line.amount >= 0) || line.amount == undefined || line.amount == '')
       return res.status(422).json('Invalid input');
 
     // Check if product exists
