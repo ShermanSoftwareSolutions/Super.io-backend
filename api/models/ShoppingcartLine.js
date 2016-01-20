@@ -18,6 +18,11 @@ module.exports = {
       model: 'product'
     },
 
+    scanned: {
+      type: 'boolean',
+      defaultsTo: 0
+    },
+
     amount: {
       type: 'integer',
       required: true,

@@ -37,5 +37,6 @@ module.exports.routes = {
   'PUT /shoppinglist/:listId/:productId': 'ShoppinglistController.addProduct',
   'PUT /shoppinglist/amount/:listId/:productId': 'ShoppinglistController.changeAmount',
 
-  'POST /shoppingcart': 'ShoppingcartController.create'
+  'POST /shoppingcart': 'ShoppingcartController.create',
+  'PUT /shoppingcart': 'ShoppingcartController.scan'
 };

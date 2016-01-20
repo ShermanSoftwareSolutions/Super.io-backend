@@ -7,6 +7,12 @@
 
 module.exports = {
 
+  /**
+   * Creates a shoppingcart with the shoppinglist data
+   *
+   * @param req
+   * @param res
+   */
   create: function (req, res) {
     var newList = {
       shoppinglistId: req.body.shoppinglistId,
@@ -48,6 +54,12 @@ module.exports = {
       })
   },
 
+  /**
+   * Enables the user to scan a product in the shoppingcart
+   *
+   * @param req
+   * @param res
+   */
   scan: function (req, res) {
     scannedProduct = {
       shoppingcartId: req.body.shoppingcartId,
@@ -56,6 +68,7 @@ module.exports = {
       amount: 1
     };
 
+    // Check if the product exists
     Product
       .findOne({id: scannedProduct.productId})
       .then(function (product) {
