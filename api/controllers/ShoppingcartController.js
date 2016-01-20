@@ -109,7 +109,7 @@ module.exports = {
     scannedProduct = {
       shoppingcartId: req.body.shoppingcartId,
       productId: req.body.productId,
-      scanned: false,
+      scanned: true,
       amount: 1
     };
 
@@ -149,9 +149,9 @@ module.exports = {
                 .create(scannedProduct)
                 .then(function (cartLine) {
                   return res.json(cartLine);
-                })
+                });
             }
-          })
+          });
       })
   },
 
