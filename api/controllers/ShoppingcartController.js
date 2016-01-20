@@ -8,6 +8,46 @@
 module.exports = {
 
   /**
+   * Find a shoppingcart with all it's products
+   *
+   * @param req
+   * @param res
+   */
+  findOne: function (req, res) {
+    Shoppingcart
+      .findOne({id: req.params.id, userId: req.userId})
+      .populate('lines')
+      .then(function (cart) {
+        if (!cart)
+          return res.notFound();
+
+        // Get all the product id's that are in this shoppingcart
+        var productIds = [];
+        cart.lines.map(function (item, id) {
+          item.product = undefined;
+          productIds.push(item.productId);
+          cart.lines[id].product = [];
+        });
+
+        // Fetch all the products and append it to the cart
+        Product
+          .find({id: productIds})
+          .then(function (products) {
+            var shoppingcart = cart.toObject();
+
+            products.map(function (productItem) {
+              shoppingcart.lines.map(function (cartItem, id) {
+                if (productItem.id == cartItem.productId) {
+                  shoppingcart.lines[id].product = productItem;
+                }
+              })
+            });
+            return res.json(shoppingcart);
+          });
+      })
+  },
+
+  /**
    * Creates a shoppingcart with the shoppinglist data
    *
    * @param req
