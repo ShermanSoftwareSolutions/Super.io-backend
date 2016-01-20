@@ -21,7 +21,7 @@ module.exports = {
     };
 
     // Check if the email and password are given, otherwise return an error
-    if (newUser.email == '' || newUser.password == '')
+    if (newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined)
       return res.status(422).json('Incorrect email or password');
 
     // Check if the user exists
@@ -70,7 +70,7 @@ module.exports = {
     };
 
     // Check if the input is null
-    if (newUser.email == '' || newUser.password == '' || newUser.confirmPassword == '')
+    if (newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined || newUser.confirmPassword == '' || newUser.confirmPassword == undefined)
       return res.status(422).json('Invalid credentials');
 
     // Compares the password and confirm password
