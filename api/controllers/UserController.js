@@ -70,7 +70,7 @@ module.exports = {
     };
 
     // Check if the input is null
-    if (newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined || newUser.confirmPassword == '' || newUser.confirmPassword == undefined)
+    if (newUser.firstName == '' || newUser.firstName == undefined || newUser.lastName == '' || newUser.lastName == undefined || newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined || newUser.confirmPassword == '' || newUser.confirmPassword == undefined)
       return res.status(422).json('Invalid credentials');
 
     // Compares the password and confirm password

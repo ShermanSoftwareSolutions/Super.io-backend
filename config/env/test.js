@@ -18,7 +18,8 @@ module.exports = {
    ***************************************************************************/
 
   models: {
-    connection: 'localTestMySQLServer'
+    connection: 'localTestMySQLServer',
+    migrate: 'drop'
   }
 
 };
