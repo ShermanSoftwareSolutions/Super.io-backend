@@ -46,6 +46,55 @@ module.exports = {
               })
           })
       })
+  },
+
+  scan: function (req, res) {
+    scannedProduct = {
+      shoppingcartId: req.body.shoppingcartId,
+      productId: req.body.productId,
+      scanned: false,
+      amount: 1
+    };
+
+    Product
+      .findOne({id: scannedProduct.productId})
+      .then(function (product) {
+        if (!product)
+          return res.status(422).json('Invalid input');
+
+        ShoppingcartLine
+          .findOne({shoppingcartId: scannedProduct.shoppingcartId, productId: scannedProduct.productId})
+          .then(function (line) {
+            // If line has been found, that means that the item is already in the shoppingcart
+            if (line) {
+              if (line.scanned) {
+                // Line has been scanned, so increment the amount by one
+                ShoppingcartLine
+                  .update({shoppingcartId: scannedProduct.shoppingcartId, productId: scannedProduct.productId},
+                    {amount: line.amount = line.amount + 1})
+                  .then(function (cartLine) {
+                    return cartLine;
+                  })
+              } else {
+                // Line has not been scanned, so set scanned to true
+                ShoppingcartLine
+                  .update({shoppingcartId: scannedProduct.shoppingcartId, productId: scannedProduct.productId},
+                    {scanned: 1})
+                  .then(function (cartLine) {
+                    return cartLine;
+                  })
+              }
+              return res.json(line)
+            } else {
+              // Otherwise it is not in the shoppingcart and needs to be added
+              ShoppingcartLine
+                .create(scannedProduct)
+                .then(function (cartLine) {
+                  return res.json(cartLine);
+                })
+            }
+          })
+      })
   }
 };
 
