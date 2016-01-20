@@ -67,23 +67,28 @@ module.exports = {
           return res.status(422).json('Invalid input');
 
         list = list.toObject();
+        var lines = [];
 
         // Delete unnecessary attributes from lines
         list.lines.map(function (item) {
-          item.shoppingcartId = item.shoppinglistId;
-          item.shoppinglistId = undefined;
-          item.id = undefined;
-          item.createdAt = undefined;
-          item.updatedAt = undefined;
+          lines.push({
+            productId: item.productId,
+            amount: item.amount,
+            scanned: 0
+          });
         });
 
         // Create the shoppingcart
         Shoppingcart
           .create(newList)
           .then(function (cart) {
+            lines.map(function (item) {
+              item.shoppingcartId = cart.id;
+            });
+
             // Create a shoppingcart line for every existing product in the shoppingcart
             ShoppingcartLine
-              .create(list.lines)
+              .create(lines)
               .then(function (cartLines) {
                 cart = cart.toObject();
                 cart.lines = cartLines;
