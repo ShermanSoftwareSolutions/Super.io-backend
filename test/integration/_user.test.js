@@ -1,7 +1,7 @@
 var should = require('should');
 var assert = require('assert');
 var request = require('supertest');
-var config = require('../..//api/services/config');
+var config = require('../../api/services/config');
 
 var url = config.API_URL;
 var jwt = undefined;
