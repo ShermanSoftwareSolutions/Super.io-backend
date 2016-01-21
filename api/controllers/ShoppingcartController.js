@@ -64,7 +64,7 @@ module.exports = {
       .populate('lines')
       .then(function (list) {
         if (!list)
-          return res.status(422).json('Invalid input');
+          return res.invalidInput();
 
         list = list.toObject();
         var lines = [];
@@ -118,7 +118,7 @@ module.exports = {
       .findOne({id: scannedProduct.productId})
       .then(function (product) {
         if (!product)
-          return res.status(422).json('Invalid input');
+          return res.invalidInput();
 
         ShoppingcartLine
           .findOne({shoppingcartId: scannedProduct.shoppingcartId, productId: scannedProduct.productId})
@@ -170,15 +170,15 @@ module.exports = {
     };
 
     // Check if the input is valid
-    if (line.shoppingcartId == '' || line.productId == '' || !(line.amount >= 0))
-      return res.status(422).json('Invalid  input');
+    if (line.shoppingcartId == '' || line.shoppingcartId == undefined || line.productId == '' || line.productId == undefined || !(line.amount >= 0) || line.amount == '' || line.amount == undefined)
+      return res.invalidInput();
 
     // Check if product exists
     Product
       .findOne({id: line.productId})
       .then(function (product) {
         if (!product)
-          return res.status(422).json('Invalid input');
+          return res.invalidInput();
 
         // If the amount is 0, delete the shoppingcart line
         if (line.amount == 0) {
@@ -186,7 +186,7 @@ module.exports = {
             .destroy({shoppingcartId: line.shoppingcartId, productId: line.productId})
             .then(function (cart) {
               if (!cart)
-                return res.status(422).json('Invalid input');
+                return res.invalidInput();
 
               return res.json(cart);
             });
@@ -197,7 +197,7 @@ module.exports = {
               {amount: line.amount})
             .then(function (cart) {
               if (!cart)
-                return res.status(422).json('Invalid input');
+                return res.invalidInput();
 
               return res.json(cart);
             });

@@ -22,23 +22,48 @@
 
 module.exports.routes = {
 
+  /**
+   * User routes
+   */
   'POST /user/login': 'UserController.login',
   'POST /user/signup': 'UserController.signup',
 
+  /**
+   * Product routes
+   */
   'GET /product': 'ProductController.all',
   'GET /product/detail/:id': 'ProductController.find',
   'GET /product/:query': 'ProductController.findQuery',
   'POST /product': 'ProductController.create',
 
+  /**
+   * Shoppinglist routes
+   */
   'GET /shoppinglist': 'ShoppinglistController.find',
   'GET /shoppinglist/:id': 'ShoppinglistController.findOne',
   'POST /shoppinglist': 'ShoppinglistController.create',
+  // Missing an endpoint for editing the shoppinglist's title?
   'DELETE /shoppinglist/:id': 'ShoppinglistController.delete',
   'PUT /shoppinglist/:listId/:productId': 'ShoppinglistController.addProduct',
   'PUT /shoppinglist/amount/:listId/:productId': 'ShoppinglistController.changeAmount',
 
+  /**
+   * Shoppingcart routes
+   */
   'GET /shoppingcart/:id': 'ShoppingcartController.findOne',
   'POST /shoppingcart': 'ShoppingcartController.create',
   'PUT /shoppingcart': 'ShoppingcartController.scan',
   'PUT /shoppingcart/amount/:shoppingcartId/:productId': 'ShoppingcartController.changeAmount',
+
+  /**
+   * Invoice routes
+   */
+  // POST endpoint to create an invoice
+
+  /**
+   * Check routes
+   */
+  // PUT for scanning
+  // POST for creating a checking object of sorts?
+  // POST for submitting the scannend products?
 };

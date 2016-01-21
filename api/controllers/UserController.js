@@ -21,21 +21,21 @@ module.exports = {
     };
 
     // Check if the email and password are given, otherwise return an error
-    if (newUser.email == '' || newUser.password == '')
-      return res.status(422).json('Incorrect email or password');
+    if (newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined)
+      return res.invalidInput('Incorrect email or password');
 
     // Check if the user exists
     User
       .findOne({email: newUser.email})
       .then(function (user) {
         if (!user)
-          return res.status(422).json('Incorrect email or password');
+          return res.invalidInput('Incorrect email or password');
 
         // Compare the supplied password from the user with the real password
         bcrypt.compare(newUser.password, user.password, function (err, isMatch) {
           // Check if the passwords are matching
           if (!isMatch || err)
-            return res.status(422).json('Incorrect email or password');
+            return res.invalidInput('Incorrect email or password');
 
           user = user.toObject();
           user.password = undefined;
@@ -70,19 +70,19 @@ module.exports = {
     };
 
     // Check if the input is null
-    if (newUser.email == '' || newUser.password == '' || newUser.confirmPassword == '')
-      return res.status(422).json('Invalid credentials');
+    if (newUser.firstName == '' || newUser.firstName == undefined || newUser.lastName == '' || newUser.lastName == undefined || newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined || newUser.confirmPassword == '' || newUser.confirmPassword == undefined)
+    return res.invalidInput();
 
     // Compares the password and confirm password
     if (newUser.password != newUser.confirmPassword)
-      return res.status(422).json('Password do not match');
+      return res.invalidInput('Passwords no not match');
 
     // Check if the email already exists
     User
       .findOne({email: newUser.email})
       .then(function (user) {
         if (user)
-          return res.status(422).json('Email is already taken');
+          return res.invalidInput('Email is already taken');
 
         // Generate a salt and create a hash
         bcrypt.genSalt(10, function (err, salt) {

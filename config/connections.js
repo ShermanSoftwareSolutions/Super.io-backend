@@ -21,6 +21,10 @@
 
 module.exports.connections = {
 
+  localDiskDb: {
+    adapter: 'sails-disk'
+  },
+
   localMySQLServer: {
     adapter: 'sails-mysql',
     host: 'localhost',
@@ -28,5 +32,4 @@ module.exports.connections = {
     password: '',
     database: 'superio'
   }
-
 };
