@@ -92,7 +92,6 @@ describe('Product controller', function () {
           // Status code should match with 200
           res.status.should.equal(200);
 
-
           should.exist(res.body);
 
           (res.body.length).should.equal(1);
