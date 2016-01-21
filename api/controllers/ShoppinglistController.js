@@ -163,32 +163,40 @@ module.exports = {
       amount: req.body.amount
     };
 
-    // Check if the products exist
+    // Check if the input is valid
     if (line.shoppinglistId == '' || line.productId == '' || !(line.amount >= 0))
       return res.status(422).json('Invalid input');
 
-    // If the amount is 0, delete the shoppinglist line
-    if (line.amount == 0) {
-      ShoppinglistLine
-        .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId})
-        .then(function (line) {
-          if (!line)
-            return res.status(422).json('Invalid input');
+    // Check if product exists
+    Product
+      .findOne({id: line.productId})
+      .then(function (product) {
+        if (!product)
+          return res.status(422).json('Invalid input');
 
-          return res.json(line);
-        });
-    } else {
-      // Otherwise update the amount of shoppinglist line
-      ShoppinglistLine
-        .update({shoppinglistId: line.shoppinglistId, productId: line.productId},
-        {amount: line.amount})
-        .then(function (line) {
-          if (!line)
-            return res.status(422).json('Invalid input');
+        // If the amount is 0, delete the shoppinglist line
+        if (line.amount == 0) {
+          ShoppinglistLine
+            .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId})
+            .then(function (line) {
+              if (!line)
+                return res.status(422).json('Invalid input');
 
-          return res.json(line);
-        });
-    }
+              return res.json(line);
+            });
+        } else {
+          // Otherwise update the amount of shoppinglist line
+          ShoppinglistLine
+            .update({shoppinglistId: line.shoppinglistId, productId: line.productId},
+              {amount: line.amount})
+            .then(function (line) {
+              if (!line)
+                return res.status(422).json('Invalid input');
+
+              return res.json(line);
+            });
+        }
+      });
   }
 };
 

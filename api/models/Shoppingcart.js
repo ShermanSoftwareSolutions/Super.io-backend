@@ -6,9 +6,22 @@
 */
 
 module.exports = {
+  tableName: 'shoppingcarts',
+  identity: 'Shoppingcart',
 
   attributes: {
-    tableName: 'shoppingcarts'
+    userId: {
+      type: 'integer',
+      required: true
+    },
+    shoppinglistId: {
+      type: 'integer',
+      required: true
+    },
+    lines: {
+      collection: 'ShoppingcartLine',
+      via: 'shoppingcartId'
+    }
   }
 };
 
