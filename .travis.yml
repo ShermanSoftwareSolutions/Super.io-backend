@@ -5,3 +5,4 @@ node_js:
 
 notifications:
   email: false
+  slack: project42team:o75c3xu0z4RgL7yc3Niqyj6N
