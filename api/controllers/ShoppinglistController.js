@@ -76,7 +76,7 @@ module.exports = {
 
     // Check if the input is not null
     if (list.title == '' || list.title == undefined)
-      return res.status(422).json('Invalid input');
+      return res.invalidInput();
 
     Shoppinglist
       .create(list)
@@ -99,13 +99,13 @@ module.exports = {
 
     // Check if the input is not null
     if (list.id == '' || list.id == undefined)
-      return res.status(422).json('Invalid input');
+      return res.invalidInput();
 
     Shoppinglist
       .destroy({id: list.id, userId: req.userId})
       .then(function (list) {
         if (!list)
-          return res.status(422).json('Invalid input');
+          return res.invalidInput();
 
         return res.json(list);
       });
@@ -127,17 +127,17 @@ module.exports = {
 
     // Check if the input is not null
     if (line.shoppinglistId == '' || line.shoppinglistId == undefined || line.productId == '' || line.productId == undefined || line.amount == '' || line.amount == undefined)
-      return res.status(422).json('Invalid input');
+      return res.invalidInput();
 
     // Check if the shoppinglist exists
     Shoppinglist.findOne({id: line.shoppinglistId}).then(function (list) {
       if (!list)
-        return res.status(422).json('Invalid input');
+        return res.invalidInput();
 
       // Check if the products exist
       Product.findOne({id: line.productId}).then(function (product) {
         if (!product)
-          return res.status(422).json('Invalid input');
+          return res.invalidInput();
 
         // Create a new shoppinglist line for the added product
         ShoppinglistLine
@@ -165,14 +165,14 @@ module.exports = {
 
     // Check if the input is valid
     if (line.shoppinglistId == '' || line.shoppinglistId == undefined || line.productId == '' || line.productId == undefined || !(line.amount >= 0) || line.amount == undefined || line.amount == '')
-      return res.status(422).json('Invalid input');
+      return res.invalidInput();
 
     // Check if product exists
     Product
       .findOne({id: line.productId})
       .then(function (product) {
         if (!product)
-          return res.status(422).json('Invalid input');
+          return res.invalidInput();
 
         // If the amount is 0, delete the shoppinglist line
         if (line.amount == 0) {
@@ -180,7 +180,7 @@ module.exports = {
             .destroy({shoppinglistId: line.shoppinglistId, productId: line.productId})
             .then(function (line) {
               if (!line)
-                return res.status(422).json('Invalid input');
+                return res.invalidInput();
 
               return res.json(line);
             });
@@ -191,7 +191,7 @@ module.exports = {
               {amount: line.amount})
             .then(function (line) {
               if (!line)
-                return res.status(422).json('Invalid input');
+                return res.invalidInput();
 
               return res.json(line);
             });

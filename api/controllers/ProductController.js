@@ -72,7 +72,7 @@ module.exports = {
 
     // Check if the input is not null
     if (newProduct.title == '' || newProduct.title == undefined || newProduct.price == '' || newProduct.price == undefined || newProduct.salesTax == undefined || (newProduct.salesTax != '6' && newProduct.salesTax != '21'))
-      return res.status(422).json('Invalid input');
+      return res.invalidInput();
 
     Product
       .create(newProduct)
