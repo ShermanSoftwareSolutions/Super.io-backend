@@ -37,5 +37,10 @@ module.exports.policies = {
 
   ShoppingcartController: {
     '*': ['jwtAuth']
+  },
+
+  // Yeah this needs to change TODO
+  InvoiceController: {
+    '*': true
   }
 };

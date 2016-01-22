@@ -6,6 +6,56 @@
  */
 
 module.exports = {
-	
-};
+
+  create: function(req, res) {
+    var priceExclusive = 0;
+    var priceInclusive = 0;
+
+    Shoppingcart
+      .findOne({id: req.body.shoppingcartId})
+      .populate('lines')
+      .then(function (productList) {
+        if (!productList)
+          return res.notFound();
+
+        var productIds = [];
+        var productAmountMap = {};
+        productList.lines.map(function (item) {
+          if(item.scanned == true){
+            productIds.push(item.productId);
+            productAmountMap[item.productId] = item.amount;
+          }
+        });
+        sails.log(JSON.stringify(productIds, null, 4));
+
+        Product
+          .find({id: productIds})
+          .then(function (products) {
+            sails.log(JSON.stringify(products, null, 4));
+            products.map(function (item) {
+              priceInclusive += item.price * productAmountMap[item.id];
+              priceExclusive += (item.price * productAmountMap[item.id]) / (1 + (parseFloat(item.salesTax) / 100));
+            })
+          }).then(function () {
+          sails.log("Incl: " + priceInclusive.toFixed(2));
+          sails.log("Excl: " + priceExclusive.toFixed(2));
+          var newInvoice = {
+            shoppingcartId: req.body.shoppingcartId,
+            priceExcl: priceExclusive.toFixed(2),
+            priceIncl: priceInclusive.toFixed(2)
+          };
+
+          Invoice
+            .create(newInvoice)
+            .then(function (invoice) {
+              return res.json(invoice);
+            })
+        })
+      })
+  },
+
+  findOne: function(req, res) {
+
+  }
+}
 
