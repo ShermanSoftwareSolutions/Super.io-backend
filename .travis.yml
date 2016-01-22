@@ -1,0 +1,8 @@
+language: node_js
+
+node_js:
+  - "0.12"
+
+notifications:
+  email: false
+  slack: project42team:o75c3xu0z4RgL7yc3Niqyj6N
