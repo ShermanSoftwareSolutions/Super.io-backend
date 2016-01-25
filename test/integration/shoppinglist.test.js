@@ -63,7 +63,7 @@ describe('Shoppinglist/cart controller', function () {
           if (err) {
             throw err;
           }
-          // Status code should match with 422
+          // Status code should match with 200
           res.status.should.equal(200);
 
           should.exist(res.body);
@@ -92,7 +92,7 @@ describe('Shoppinglist/cart controller', function () {
           if (err) {
             throw err;
           }
-          // Status code should match with 422
+          // Status code should match with 200
           res.status.should.equal(200);
 
           should.exist(res.body);
@@ -143,7 +143,7 @@ describe('Shoppinglist/cart controller', function () {
                 throw err;
               }
 
-              // Status code should match with 422
+              // Status code should match with 200
               res.status.should.equal(200);
 
               should.exist(res.body);
