@@ -35,9 +35,9 @@ describe('Invoice controller', function () {
   });
 
   describe('POST /invoice:', function () {
-    var endpoint = 'product';
+    var endpoint = 'invoice';
 
-    it('Should result in a 422 when trying to create an invoice without a shoppingcartid', function (done) {
+    it('Should result in a 404 when trying to create an invoice without a shoppingcartid', function (done) {
       request(url)
         .post(endpoint)
         .send({})
@@ -47,8 +47,8 @@ describe('Invoice controller', function () {
           if (err) {
             throw err;
           }
-          // Status code should match with 422
-          res.status.should.equal(422);
+          // Status code should match with 404
+          res.status.should.equal(404);
 
           should.exist(res.body);
 
