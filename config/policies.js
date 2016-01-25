@@ -37,5 +37,9 @@ module.exports.policies = {
 
   ShoppingcartController: {
     '*': ['jwtAuth']
+  },
+
+  InvoiceController: {
+    '*': true
   }
 };

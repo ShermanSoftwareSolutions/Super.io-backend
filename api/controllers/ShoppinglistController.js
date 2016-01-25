@@ -38,7 +38,6 @@ module.exports = {
         // Get all the product id's that are in this shoppinglist
         var productIds = [];
         list.lines.map(function (item, id) {
-          item.product = undefined;
           productIds.push(item.productId);
           list.lines[id].product = [];
         });

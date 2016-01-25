@@ -11,6 +11,7 @@
     "rc": "~0.5.0",
     "sails": "~0.11.4",
     "sails-disk": "~0.10.0",
+    "sails-migrations": "^2.0.8",
     "sails-mysql": "*"
   },
   "devDependencies": {
