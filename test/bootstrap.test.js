@@ -3,7 +3,7 @@ var Sails = require('sails'),
 
 before(function(done) {
   // Increase the Mocha timeout so that Sails has enough time to lift.
-  this.timeout(5000);
+  this.timeout(10000);
 
   var testConfig = {
     environment: 'test',
@@ -11,15 +11,15 @@ before(function(done) {
     log: {
       level: 'error'
     },
+    models: {
+      migrate: 'drop',
+      connection: 'testDB'
+    },
     connections: {
       testDB: {
         adapter: 'sails-disk'
       }
-    },
-    connection: 'testDB',
-
-    //wipe/drop ALL my data and rebuild models every time
-    migrate: 'drop'
+    }
   };
 
   Sails.lift(testConfig, function(err, server) {

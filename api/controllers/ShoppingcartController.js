@@ -131,7 +131,7 @@ module.exports = {
                   .update({shoppingcartId: scannedProduct.shoppingcartId, productId: scannedProduct.productId},
                     {amount: line.amount = line.amount + 1})
                   .then(function (cartLine) {
-                    return cartLine;
+                    return res.json(cartLine);
                   })
               } else {
                 // Line has not been scanned, so set scanned to true
@@ -139,10 +139,9 @@ module.exports = {
                   .update({shoppingcartId: scannedProduct.shoppingcartId, productId: scannedProduct.productId},
                     {scanned: 1})
                   .then(function (cartLine) {
-                    return cartLine;
+                    return res.json(cartLine);
                   })
               }
-              return res.json(line)
             } else {
               // Otherwise it is not in the shoppingcart and needs to be added
               ShoppingcartLine
