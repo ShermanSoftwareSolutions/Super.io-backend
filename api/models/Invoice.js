@@ -11,7 +11,7 @@ module.exports = {
 
   attributes: {
     shoppingcartId: {
-      type: 'int',
+      type: 'integer',
       required: true
     },
 

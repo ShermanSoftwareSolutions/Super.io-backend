@@ -9,6 +9,7 @@ module.exports = {
 
   /**
    * Create a new invoice
+   *
    * @param req
    * @param res
    */
@@ -27,6 +28,7 @@ module.exports = {
         // Get the product id's
         var productIds = [];
         var productAmountMap = {};
+
         productList.lines.map(function (item) {
           if (item.scanned == true) {
             productIds.push(item.productId);
@@ -43,25 +45,25 @@ module.exports = {
               priceExclusive += (item.price * productAmountMap[item.id]) / (1 + (parseFloat(item.salesTax) / 100));
             })
           }).then(function () {
+            var newInvoice = {
+              shoppingcartId: req.body.shoppingcartId,
+              priceExcl: priceExclusive.toFixed(2),
+              priceIncl: priceInclusive.toFixed(2)
+            };
 
-          var newInvoice = {
-            shoppingcartId: req.body.shoppingcartId,
-            priceExcl: priceExclusive.toFixed(2),
-            priceIncl: priceInclusive.toFixed(2)
-          };
-
-          // Create the invoice
-          Invoice
-            .create(newInvoice)
-            .then(function (invoice) {
-              return res.json(invoice);
-            })
-        })
+            // Create the invoice
+            Invoice
+              .create(newInvoice)
+              .then(function (invoice) {
+                return res.json(invoice);
+              })
+          });
       })
   },
 
   /**
    * Get the receipt
+   *
    * @param req
    * @param res
    */
@@ -91,6 +93,7 @@ module.exports = {
           .then(function (productList) {
             var productIds = [];
             var productAmountMap = {};
+
             productList.lines.map(function (item) {
               if (item.scanned == true) {
                 productIds.push(item.productId);
@@ -103,11 +106,11 @@ module.exports = {
               .find({id: productIds})
               .then(function (products) {
                 products.map(function (item) {
-
                   // Calculate the important information like amount and total price and taxes
                   item.amount = productAmountMap[item.id];
                   item.totalPrice = (item.price * productAmountMap[item.id]);
                   invoice.totalAmount += item.amount;
+
                   var itemPriceExcl = ((item.price * productAmountMap[item.id]) / (1 + (parseFloat(item.salesTax) / 100)));
                   var itemSalesTaxTotal = (item.price * productAmountMap[item.id]) - itemPriceExcl;
 
@@ -120,13 +123,13 @@ module.exports = {
                     invoice.salesTax21ToPay += itemSalesTaxTotal;
                   }
 
-                  // Remove useless parts
-                  delete item["image"];
-                  delete item["createdAt"];
-                  delete item["updatedAt"];
-                  delete item["salesTax"];
-                  delete item["id"];
-                  invoice.products.push(item);
+                  // Create a new invoice line by making a new product object
+                  var product = {
+                    title: item.title,
+                    price: item.price
+                  };
+
+                  invoice.products.push(product);
                 });
 
                 // Clean up the prices
@@ -143,6 +146,7 @@ module.exports = {
 
   /**
    * Pay for a given invoice
+   *
    * @param req
    * @param res
    */
@@ -160,5 +164,5 @@ module.exports = {
         return res.ok();
       });
   }
-}
+};
 
