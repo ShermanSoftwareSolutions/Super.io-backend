@@ -38,8 +38,8 @@ module.exports.policies = {
   ShoppingcartController: {
     '*': ['jwtAuth']
   },
-  
+
   InvoiceController: {
-    '*': ['jwtAuth']
+    '*': true
   }
 };

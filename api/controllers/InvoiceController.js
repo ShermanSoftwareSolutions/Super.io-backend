@@ -106,13 +106,20 @@ module.exports = {
               .find({id: productIds})
               .then(function (products) {
                 products.map(function (item) {
-                  // Calculate the important information like amount and total price and taxes
-                  item.amount = productAmountMap[item.id];
-                  item.totalPrice = (item.price * productAmountMap[item.id]);
-                  invoice.totalAmount += item.amount;
 
-                  var itemPriceExcl = ((item.price * productAmountMap[item.id]) / (1 + (parseFloat(item.salesTax) / 100)));
-                  var itemSalesTaxTotal = (item.price * productAmountMap[item.id]) - itemPriceExcl;
+                  // Create a new invoice line by making a new product object
+                  var product = {
+                    title: item.title,
+                    price: item.price,
+                    amount: productAmountMap[item.id],
+                    totalPrice: (item.price * productAmountMap[item.id])
+                  };
+
+                  // Calculate the important information like amount and total price and taxes
+                  invoice.totalAmount += product.amount;
+
+                  var itemPriceExcl = ((product.price * product.amount) / (1 + (parseFloat(item.salesTax) / 100)));
+                  var itemSalesTaxTotal = (product.price * product.amount) - itemPriceExcl;
 
                   // Add taxes to the relevant parts of the receipt
                   if (item.salesTax == 6) {
@@ -122,12 +129,6 @@ module.exports = {
                     invoice.salesTax21Excl += itemPriceExcl;
                     invoice.salesTax21ToPay += itemSalesTaxTotal;
                   }
-
-                  // Create a new invoice line by making a new product object
-                  var product = {
-                    title: item.title,
-                    price: item.price
-                  };
 
                   invoice.products.push(product);
                 });
