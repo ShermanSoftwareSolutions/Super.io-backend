@@ -1,5 +1,7 @@
 # Super.io backend
 
+[![Build Status](https://travis-ci.org/ShermanSoftwareSolutions/Super.io-backend.svg?branch=develop)](https://travis-ci.org/ShermanSoftwareSolutions/Super.io-backend)
+
 The Super.io backend in Sails.js for the Hanze specialization SE 4.2
 
 ## Technology stack
