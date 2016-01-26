@@ -31,5 +31,13 @@ module.exports.connections = {
     user: 'root',
     password: '',
     database: 'superio'
+  },
+
+  productionMySQLServer: {
+    adapter: 'sails-mysql',
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'superio'
   }
 };
