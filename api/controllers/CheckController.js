@@ -20,9 +20,6 @@ module.exports = {
         if (!productList)
           return res.invalidInput();
 
-        console.log(req.body);
-        console.log(productList);
-
         // The response
         var response = {products: []};
         // To store the id's for the invalid products. Necessary to find the products in the DB later on
@@ -72,8 +69,6 @@ module.exports = {
         if (response.products.length == 0) {
           return res.ok();
         }
-
-        console.log(invalidProductQuery);
 
         // Add the names to the response
         Product
