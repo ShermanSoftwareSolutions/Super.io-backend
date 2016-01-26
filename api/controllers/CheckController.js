@@ -15,11 +15,13 @@ module.exports = {
   check: function (req, res) {
     Shoppingcart
       .findOne({id: req.body.shoppingcartId})
-      .populate('lines')
+      .populate('lines', {scanned: true})
       .then(function (productList) {
         if (!productList)
           return res.invalidInput();
 
+        sails.log(JSON.stringify(productList, null, 4));
+        
         // The response
         var response = {products: []};
         // To store the id's for the invalid products. Necessary to find the products in the DB later on
@@ -29,7 +31,7 @@ module.exports = {
         for (var j = 0; j < productList.lines.length; j++) {
           var productFound = false;
           for (var i = 0; !productFound && (i < req.body.products.length); i++) {
-            if (req.body.products[i].productId == productList.lines[j].productId && (productList.lines[j].scanned == true)) {
+            if (req.body.products[i].productId == productList.lines[j].productId) {
               // If the product amounts are not equal, store it for the response
               if (req.body.products[i].amount != productList.lines[j].amount) {
                 response.products.push({
