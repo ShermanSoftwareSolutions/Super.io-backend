@@ -29,7 +29,7 @@ module.exports = {
         for (var j = 0; j < productList.lines.length; j++) {
           var productFound = false;
           for (var i = 0; !productFound && (i < req.body.products.length); i++) {
-            if (req.body.products[i].productId == productList.lines[j].productId) {
+            if (req.body.products[i].productId == productList.lines[j].productId && (productList.lines[j].scanned == true)) {
               // If the product amounts are not equal, store it for the response
               if (req.body.products[i].amount != productList.lines[j].amount) {
                 response.products.push({
