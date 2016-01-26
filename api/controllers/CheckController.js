@@ -20,8 +20,6 @@ module.exports = {
         if (!productList)
           return res.invalidInput();
 
-        sails.log(JSON.stringify(productList, null, 4));
-        
         // The response
         var response = {products: []};
         // To store the id's for the invalid products. Necessary to find the products in the DB later on
