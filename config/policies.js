@@ -44,6 +44,6 @@ module.exports.policies = {
   },
 
   CheckController: {
-    '*': true
+    '*': ['jwtAuth']
   }
 };
