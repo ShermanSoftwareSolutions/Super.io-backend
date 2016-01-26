@@ -67,6 +67,6 @@ module.exports.routes = {
    * Check routes
    */
   // POST for creating a checking object of sorts?
-  'POST /check' : 'CheckController.check'
+  'POST /check' : 'CheckController.check' 
 
 };
