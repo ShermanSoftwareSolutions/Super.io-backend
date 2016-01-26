@@ -40,6 +40,10 @@ module.exports.policies = {
   },
 
   InvoiceController: {
+    '*': ['jwtAuth']
+  },
+
+  CheckController: {
     '*': true
   }
 };
