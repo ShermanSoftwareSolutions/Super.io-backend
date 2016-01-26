@@ -80,7 +80,7 @@ module.exports = {
             response.products.forEach(function (item) {
               var nameFound = false;
               for (var i = 0; !nameFound && (i < productList.length); i++) {
-                if (item.productId == productList[i].productId) {
+                if (item.productId == productList[i].id) {
                   item.title = productList[i].title;
                   productList.splice(i, 1);
                   i--;
