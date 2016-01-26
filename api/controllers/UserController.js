@@ -71,7 +71,7 @@ module.exports = {
 
     // Check if the input is null
     if (newUser.firstName == '' || newUser.firstName == undefined || newUser.lastName == '' || newUser.lastName == undefined || newUser.email == '' || newUser.email == undefined || newUser.password == '' || newUser.password == undefined || newUser.confirmPassword == '' || newUser.confirmPassword == undefined)
-    return res.invalidInput();
+      return res.invalidInput();
 
     // Compares the password and confirm password
     if (newUser.password != newUser.confirmPassword)

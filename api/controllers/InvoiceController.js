@@ -69,7 +69,7 @@ module.exports = {
    */
   getReceipt: function (req, res) {
     Invoice
-      .findOne({id: req.body.invoiceId})
+      .findOne({id: req.params.invoiceId})
       .then(function (invoice) {
         if (!invoice)
           return res.notFound();
@@ -91,6 +91,7 @@ module.exports = {
           .findOne({id: invoice.shoppingcartId})
           .populate('lines')
           .then(function (productList) {
+            console.log(productList);
             var productIds = [];
             var productAmountMap = {};
 

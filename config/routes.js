@@ -60,7 +60,7 @@ module.exports.routes = {
    */
   // POST endpoint to create an invoice
   'POST /invoice' : 'InvoiceController.create',
-  'POST /invoice/receipt': 'InvoiceController.getReceipt',
+  'GET /invoice/:invoiceId': 'InvoiceController.getReceipt',
   'POST /invoice/pay': 'InvoiceController.pay'
 
   /**

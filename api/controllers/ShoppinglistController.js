@@ -124,8 +124,12 @@ module.exports = {
       amount: req.body.amount
     };
 
+    // Set amount to 1 if it's null
+    if (line.amount == '' || line.amount == undefined)
+      line.amount = 1;
+
     // Check if the input is not null
-    if (line.shoppinglistId == '' || line.shoppinglistId == undefined || line.productId == '' || line.productId == undefined || line.amount == '' || line.amount == undefined)
+    if (line.shoppinglistId == '' || line.shoppinglistId == undefined || line.productId == '' || line.productId == undefined)
       return res.invalidInput();
 
     // Check if the shoppinglist exists
