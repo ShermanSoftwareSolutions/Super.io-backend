@@ -61,11 +61,10 @@ module.exports.routes = {
   'POST /invoice' : 'InvoiceController.create',
   'GET /invoice/detail/:invoiceId': 'InvoiceController.find',
   'GET /invoice/:invoiceId': 'InvoiceController.getReceipt',
-  'POST /invoice/pay': 'InvoiceController.pay'
+  'POST /invoice/pay': 'InvoiceController.pay',
 
   /**
    * Check routes
    */
-  // POST for creating a checking object of sorts?
-
+  'POST /check': 'CheckController.check'
 };
