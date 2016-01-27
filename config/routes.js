@@ -22,28 +22,49 @@
 
 module.exports.routes = {
 
-  /***************************************************************************
-  *                                                                          *
-  * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
-  * etc. depending on your default view engine) your home page.              *
-  *                                                                          *
-  * (Alternatively, remove this and add an `index.html` file in your         *
-  * `assets` directory)                                                      *
-  *                                                                          *
-  ***************************************************************************/
+  /**
+   * User routes
+   */
+  'POST /user/login': 'UserController.login',
+  'POST /user/signup': 'UserController.signup',
 
-  '/': {
-    view: 'homepage'
-  }
+  /**
+   * Product routes
+   */
+  'GET /product': 'ProductController.all',
+  'GET /product/detail/:id': 'ProductController.find',
+  'GET /product/:query': 'ProductController.findQuery',
+  'POST /product': 'ProductController.create',
 
-  /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
-  * If a request to a URL doesn't match any of the custom routes above, it   *
-  * is matched against Sails route blueprints. See `config/blueprints.js`    *
-  * for configuration options and examples.                                  *
-  *                                                                          *
-  ***************************************************************************/
+  /**
+   * Shoppinglist routes
+   */
+  'GET /shoppinglist': 'ShoppinglistController.find',
+  'GET /shoppinglist/:id': 'ShoppinglistController.findOne',
+  'POST /shoppinglist': 'ShoppinglistController.create',
+  // Missing an endpoint for editing the shoppinglist's title?
+  'DELETE /shoppinglist/:id': 'ShoppinglistController.delete',
+  'PUT /shoppinglist/:listId/:productId': 'ShoppinglistController.addProduct',
+  'PUT /shoppinglist/amount/:listId/:productId': 'ShoppinglistController.changeAmount',
 
+  /**
+   * Shoppingcart routes
+   */
+  'GET /shoppingcart/:id': 'ShoppingcartController.findOne',
+  'POST /shoppingcart': 'ShoppingcartController.create',
+  'PUT /shoppingcart': 'ShoppingcartController.scan',
+  'PUT /shoppingcart/amount/:shoppingcartId/:productId': 'ShoppingcartController.changeAmount',
+
+  /**
+   * Invoice routes
+   */
+  'POST /invoice' : 'InvoiceController.create',
+  'GET /invoice/detail/:invoiceId': 'InvoiceController.find',
+  'GET /invoice/:invoiceId': 'InvoiceController.getReceipt',
+  'POST /invoice/pay': 'InvoiceController.pay',
+
+  /**
+   * Check routes
+   */
+  'POST /check': 'CheckController.check'
 };

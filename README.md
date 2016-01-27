@@ -1,5 +1,7 @@
 # Super.io backend
 
+[![Build Status](https://travis-ci.org/ShermanSoftwareSolutions/Super.io-backend.svg?branch=develop)](https://travis-ci.org/ShermanSoftwareSolutions/Super.io-backend)
+
 The Super.io backend in Sails.js for the Hanze specialization SE 4.2
 
 ## Technology stack
@@ -9,5 +11,9 @@ The Super.io backend in Sails.js for the Hanze specialization SE 4.2
 ## Installation guide
 
 * Install the dependencies with ```npm install```
-* Globally install Nodemon with ```npm install --g nodemon```
+* Configure your MySQL database in ```config/connections.js``` and create a database called ```superio```
 * Run the backend with ```npm start```
+* Open [http://localhost:1337](http://localhost:1337) in Postman to use the api
+
+## Testing
+* Run the tests with ```npm test```
