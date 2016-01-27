@@ -62,6 +62,23 @@ module.exports = {
   },
 
   /**
+   * Get the invoice by ID
+   *
+   * @param req
+   * @param res
+   */
+  find: function (req, res) {
+    Invoice
+      .findOne({id: req.params.invoiceId})
+      .then(function (invoice) {
+        if (!invoice)
+          return res.notFound();
+
+        return res.json(invoice);
+      });
+  },
+
+  /**
    * Get the receipt
    *
    * @param req
@@ -69,7 +86,7 @@ module.exports = {
    */
   getReceipt: function (req, res) {
     Invoice
-      .findOne({id: req.body.invoiceId})
+      .findOne({id: req.params.invoiceId})
       .then(function (invoice) {
         if (!invoice)
           return res.notFound();

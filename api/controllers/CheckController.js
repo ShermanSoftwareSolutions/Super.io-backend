@@ -15,7 +15,7 @@ module.exports = {
   check: function (req, res) {
     Shoppingcart
       .findOne({id: req.body.shoppingcartId})
-      .populate('lines')
+      .populate('lines', {scanned: true})
       .then(function (productList) {
         if (!productList)
           return res.invalidInput();
@@ -33,7 +33,7 @@ module.exports = {
               // If the product amounts are not equal, store it for the response
               if (req.body.products[i].amount != productList.lines[j].amount) {
                 response.products.push({
-                  id: productList.lines[j].productId,
+                  productId: productList.lines[j].productId,
                   amount: (productList.lines[j].amount - req.body.products[i].amount)
                 });
                 invalidProductQuery.push(productList.lines[j].productId);
@@ -51,7 +51,7 @@ module.exports = {
 
         // A function to add items to the response
         var addFunction = function (item, modifier) {
-          response.products.push({id: item.productId, amount: (modifier * item.amount)});
+          response.products.push({productId: item.productId, amount: (modifier * item.amount)});
           invalidProductQuery.push(item.productId);
         };
 
@@ -80,7 +80,7 @@ module.exports = {
             response.products.forEach(function (item) {
               var nameFound = false;
               for (var i = 0; !nameFound && (i < productList.length); i++) {
-                if (item.id == productList[i].id) {
+                if (item.productId == productList[i].id) {
                   item.title = productList[i].title;
                   productList.splice(i, 1);
                   i--;
