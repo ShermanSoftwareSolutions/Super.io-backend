@@ -144,20 +144,24 @@ module.exports = {
 
         // Check whether the input already exists
         ShoppinglistLine
-          .findOne({shoppinglistId: line.shoppinglistId})
+          .find({shoppinglistId: line.shoppinglistId})
           .where({productId: line.productId})
-          .then(function (shoppinglistLine) {
-            shoppinglistLine.amount += line.amount;
-            shoppinglistLine.save();
-            return res.json(shoppinglistLine);
+          .then(function (shoppinglistLines) {
+            if (!shoppinglistLines) {
+              // Create a new shoppinglist line for the added product
+              ShoppinglistLine
+                .create(line)
+                .then(function (newLine) {
+                  return res.json(newLine);
+                })
+            } else {
+              shoppinglistLines.forEach(function (item) {
+                item.amount += line.amount;
+                item.save();
+                return res.json(item);
+              });
+            }
           });
-
-        // Create a new shoppinglist line for the added product
-        ShoppinglistLine
-          .create(line)
-          .then(function (newLine) {
-            return res.json(newLine);
-          })
       })
     });
   },
