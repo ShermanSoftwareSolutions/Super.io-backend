@@ -139,31 +139,32 @@ module.exports = {
 
       // Check if the products exist
       Product.findOne({id: line.productId}).then(function (product) {
-        if (!product)
-          return res.invalidInput();
+          if (!product)
+            return res.invalidInput();
 
-        // Check whether the input already exists
-        ShoppinglistLine
-          .find({shoppinglistId: line.shoppinglistId})
-          .where({productId: line.productId})
-          .then(function (shoppinglistLines) {
-            if (!shoppinglistLines) {
-              // Create a new shoppinglist line for the added product
-              ShoppinglistLine
-                .create(line)
-                .then(function (newLine) {
-                  return res.json(newLine);
-                })
-            } else {
-              shoppinglistLines.forEach(function (item) {
-                item.amount += line.amount;
-                item.save();
-                return res.json(item);
-              });
-            }
-          });
-      })
-    });
+          // Check whether the input already exists
+          ShoppinglistLine
+            .find({shoppinglistId: line.shoppinglistId})
+            .where({productId: line.productId})
+            .then(function (shoppinglistLines) {
+              if (shoppinglistLines.length == 0) {
+                // Create a new shoppinglist line for the added product
+                ShoppinglistLine
+                  .create(line)
+                  .then(function (newLine) {
+                    return res.json(newLine);
+                  })
+              } else {
+                // If it exists, update it
+                shoppinglistLines[0].amount += parseInt(line.amount);
+                shoppinglistLines[0].save();
+                return res.json(shoppinglistLines[0]);
+              }
+            });
+        }
+      )
+    })
+    ;
   },
 
   /**
@@ -215,5 +216,6 @@ module.exports = {
         }
       });
   }
-};
+}
+;
 
