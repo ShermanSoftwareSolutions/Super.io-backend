@@ -142,6 +142,16 @@ module.exports = {
         if (!product)
           return res.invalidInput();
 
+        // Check whether the input already exists
+        ShoppinglistLine
+          .findOne({shoppinglistId: line.shoppinglistId})
+          .where({productId: line.productId})
+          .then(function (shoppinglistLine) {
+            shoppinglistLine.amount += line.amount;
+            shoppinglistLine.save();
+            return res.json(shoppinglistLine);
+          });
+
         // Create a new shoppinglist line for the added product
         ShoppinglistLine
           .create(line)
